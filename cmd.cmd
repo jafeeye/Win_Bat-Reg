@@ -66,6 +66,7 @@ REG Delete "HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2E
 ::°±¥Î SmartScreen
 
 ::¸T¥Î Windows Defender
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t reg_dword /d 00000001 /F
 
 ::°±¥Î¥ð¯v
 powercfg.exe /hibernate off
