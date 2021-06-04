@@ -1,22 +1,26 @@
 @echo off & setlocal
-echo ===================¶i¦æ¨t²ÎÀu¤Æ======================
-::°±¤î§ó·s
+echo ===================é€²è¡Œç³»çµ±å„ªåŒ–======================
+::åœæ­¢æ›´æ–°
 sc stop wuauserv && sc config wuauserv start= disabled
 sc stop BITS && sc config BITS start= disabled
 sc stop dosvc && sc config dosvc start= disabled
 sc stop WaaSMedicSvc && sc config WaaSMedicSvc start= disabled
 sc stop UsoSvc && sc config UsoSvc start= disabled
 
-::°±¤î Windows Search¡A¸T¤î«á SearchIndexer ©MªşÄİªº SearchProtocolHost¡BSearchFilterHost ÁÙ¬O·|¶]¥X¨Ó
+::åœæ­¢ Windows Searchï¼Œç¦æ­¢å¾Œ SearchIndexer å’Œé™„å±¬çš„ SearchProtocolHostã€SearchFilterHost é‚„æ˜¯æœƒè·‘å‡ºä¾†
 sc stop "wsearch" && sc config "wsearch" start= disabled
 dism /online /disable-feature /featurename:WSearch
 
-::°±¤î fetch
+::åœæ­¢ fetch
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters" /v EnablePrefetcher /t reg_dword /d 0 /F
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters" /v EnableSuperfetch /t reg_dword /d 0 /F
 sc stop "sysmain" && sc config "sysmain" start= disabled
 
-::¸T¥Î Diagnostics ¶EÂ_µ¦²¤ªA°È
+::åœç”¨å¤šé¤˜æœå‹™
+::Connected User Experiences and Telemetry Service
+sc stop "DiagTrack" && sc config "DiagTrack" start= disabled
+
+::ç¦ç”¨ Diagnostics è¨ºæ–·ç­–ç•¥æœå‹™
 :: Diagnostic Execution Service
 sc stop diagsvc && sc config diagsvc start= disabled
 :: Diagnostic Policy Service
@@ -26,14 +30,14 @@ sc stop WdiServiceHost && sc config WdiServiceHost start= disabled
 :: Diagnostic System Host
 sc stop WdiSystemHost && sc config WdiSystemHost start= disabled
 
-::°±¥ÎºÏºĞ­«²Õ
+::åœç”¨ç£ç¢Ÿé‡çµ„
 schtasks /Delete /TN "\Microsoft\Windows\Defrag\ScheduledDefrag" /F
 
-::°±¥Î¨t²ÎÁÙ­ì
+::åœç”¨ç³»çµ±é‚„åŸ
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" /v DisableSR /t reg_dword /d 00000001 /F
 schtasks /delete /TN "\Microsoft\Windows\SystemRestore\SR" /F
 
-::§R°£±Æµ{
+::åˆªé™¤æ’ç¨‹
 schtasks /delete /TN "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /F
 schtasks /delete /TN "\Microsoft\Windows\Application Experience\StartupAppTask" /F
 schtasks /delete /TN "\Microsoft\Windows\Application Experience\PcaPatchDbTask" /F
@@ -43,9 +47,9 @@ schtasks /delete /TN "\Microsoft\Windows\Customer Experience Improvement Program
 schtasks /delete /TN "\Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /F
 schtasks /delete /TN "\Microsoft\Windows\WindowsUpdate\Scheduled Start" /F
 
-::±Ò¥Î¶Ç²Î¹Ï¤ùÀËµø¾¹
+::å•Ÿç”¨å‚³çµ±åœ–ç‰‡æª¢è¦–å™¨
 
-::²¾°£ OneDrive
+::ç§»é™¤ OneDrive
 taskkill /f /im OneDrive.exe
 %SystemRoot%\System32\OneDriveSetup.exe /uninstall
 %SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
@@ -57,19 +61,19 @@ del "%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDriv
 REG Delete "HKEY_CLASSES_ROOT\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /f
 REG Delete "HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /f
 
-::°±¥Î Autorun.inf
+::åœç”¨ Autorun.inf
 
-::°±¥Î SmartScreen
+::åœç”¨ SmartScreen
 
-::¸T¥Î Windows Defender
+::ç¦ç”¨ Windows Defender
 
-::°±¥Î¥ğ¯v
+::åœç”¨ä¼‘çœ 
 powercfg.exe /hibernate off
 
-::±Ò¥Î .Net 3.5
+::å•Ÿç”¨ .Net 3.5
 dism /online /enable-feature /featurename:NetFx3
 
-::§R°£¼È¦sÀÉ
+::åˆªé™¤æš«å­˜æª”
 del C:\REG\*.* /s /q /f
 RD C:\REG
 pause
