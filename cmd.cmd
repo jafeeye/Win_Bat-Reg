@@ -68,6 +68,11 @@ REG Delete "HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2E
 ::禁用 Windows Defender
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t reg_dword /d 00000001 /F
 
+:: 停用 HomeGroup (1903後此功能被移除)
+
+:: 停用註冊檔備份 (1803後此功能被移除)
+:: HKLM\System\CurrentControlSet\Control\Session Manager\Configuration Manager\EnablePeriodicBackup
+
 ::停用休眠
 powercfg.exe /hibernate off
 
