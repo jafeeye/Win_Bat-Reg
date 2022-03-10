@@ -1,0 +1,5 @@
+select vdisk file="C:\Portable FIles\AppTools_2022.01.14.vhd"
+attach vdisk
+select part 1
+assign letter=D
+exit
